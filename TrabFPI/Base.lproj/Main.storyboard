@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,13 +13,52 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TrabFPI" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LXq-a2-vEc">
+                                <rect key="frame" x="93.5" y="20" width="188" height="248"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="248" id="g1o-Kh-6BX"/>
+                                    <constraint firstAttribute="width" constant="188" id="tbJ-D2-Ci3"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y1d-Qr-QXb">
+                                <rect key="frame" x="93.5" y="419" width="188" height="248"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="188" id="0YO-vf-HiQ"/>
+                                    <constraint firstAttribute="height" constant="248" id="GJ2-Gp-B2J"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ap-OD-0Ov">
+                                <rect key="frame" x="164" y="318" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="1gi-ld-4pP"/>
+                                    <constraint firstAttribute="width" constant="46" id="UrH-de-LKb"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="q3L-gt-h3E"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="0Ap-OD-0Ov" firstAttribute="top" secondItem="LXq-a2-vEc" secondAttribute="bottom" constant="50" id="3bM-rb-sad"/>
+                            <constraint firstItem="y1d-Qr-QXb" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="80p-CO-Xnw"/>
+                            <constraint firstItem="LXq-a2-vEc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BFG-uZ-ghU"/>
+                            <constraint firstItem="y1d-Qr-QXb" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="T3y-M5-2i1"/>
+                            <constraint firstItem="LXq-a2-vEc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hdm-Sp-hy3"/>
+                            <constraint firstItem="0Ap-OD-0Ov" firstAttribute="centerX" secondItem="LXq-a2-vEc" secondAttribute="centerX" id="jUN-92-R3M"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="imageVIew" destination="LXq-a2-vEc" id="Vv2-ms-Qiz"/>
+                        <outlet property="outImageView" destination="y1d-Qr-QXb" id="rE4-Vv-9FR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
