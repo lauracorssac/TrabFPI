@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var imageVIew: UIImageView!
     @IBOutlet weak var outImageView: UIImageView!
+    @IBOutlet weak var textField: UITextField!
     
     var height: Int!
     var width: Int!
@@ -21,11 +22,32 @@ class ViewController: UIViewController {
     let colorSpace = CGColorSpaceCreateDeviceRGB()
     var bitmapInfo: UInt32!
     
+    @IBAction func saveButtonPressed(_ sender: UIButton) {
+        let outContext = CGContext(data: pixels.baseAddress, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace,bitmapInfo: bitmapInfo, releaseCallback: nil, releaseInfo: nil)
+        
+        let outImage = UIImage(cgImage: outContext!.makeImage()!)
+        
+        //let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let data = UIImageJPEGRepresentation(outImage, 1)
+        guard let imageData = data else {
+            print("no image data")
+            return
+        }
+        do {
+            try imageData.write(to: urls.first!.appendingPathComponent("copy.jpg"))
+        } catch let error {
+           print("unable to save", error.localizedDescription)
+        }
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        let image = UIImage(named: "gigio.png")
+        textField.layer.borderWidth = 2
+        textField.layer.cornerRadius = 3
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.delegate = self
+        let image = UIImage(named: "gigi2.jpg")
         height = Int((image?.size.height)!)
         width = Int((image?.size.width)!)
         bytesPerRow = 4 * width // 4 para RGBA
@@ -105,12 +127,9 @@ class ViewController: UIViewController {
             let red = Double(byte0)
             let green = Double(byte1)
             let blue = Double(byte2)
-            //let alpha = byte1
             
-            //let first8 = pixel & 0b11111111_00000000_00000000_00000000_00000000
             let L = 0.299*red + 0.587*green + 0.114*blue
             let int8 = UInt8.init(L)
-            //let int32 = UInt32(int8) << 24 | UInt32(int8) << 16 | UInt32(int8) << 8 | UInt32(1)
             let int32 = UInt32(byte3) << 24 | UInt32(int8) << 16 | UInt32(int8) << 8 | UInt32(int8)
             
             pixelsCopy[i] = int32
@@ -123,13 +142,74 @@ class ViewController: UIViewController {
         
     }
     
-    
-    
-    
-    
 }
 
-
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let _ = textField.text, let number = Int(textField.text!) else {
+            return false
+        }
+        if number > 0 && number <= 256 {
+            textField.layer.borderColor = UIColor.black.cgColor
+            textField.resignFirstResponder()
+            return true
+        } else {
+            textField.layer.borderColor = UIColor.red.cgColor
+            return false
+        }
+    }
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
+        for (i, _) in pixelsCopy.enumerated() {
+            
+            let pixel = pixels[i]
+            
+            let byte0 = UInt8(pixel & 0x000000FF)
+            let byte3 = UInt8((pixel & 0xFF000000) >> 24) // alpha vem primeiro???
+            let shade = Int(byte0)
+            let shadesNumber = Int(textField.text!)!
+            var newShade: Int
+            
+            if shadesNumber <= 1 {
+                newShade = 255
+            } else {
+                let intervals = shadesNumber - 1
+                let intervalSize = 255 / intervals
+                var nearestShade = intervalSize
+                let lastBound = 255 - intervalSize
+                while nearestShade < shade && nearestShade <= lastBound {
+                    nearestShade += intervalSize
+                }
+                let highDif = abs(nearestShade - shade)
+                let lowDif = abs(nearestShade - intervalSize - shade)
+                
+                if highDif < lowDif {
+                    newShade = nearestShade
+                } else {
+                    newShade = nearestShade - intervalSize
+                }
+              
+            }
+            let int8 = UInt8.init(newShade)
+            if int8 != shade {
+                 print("new", newShade, "old", shade)
+            }
+            let int32 = UInt32(byte3) << 24 | UInt32(int8) << 16 | UInt32(int8) << 8 | UInt32(int8)
+            
+            pixelsCopy[i] = int32
+        }
+        let outContext = CGContext(data: pixelsCopy.baseAddress, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace,bitmapInfo: bitmapInfo, releaseCallback: nil, releaseInfo: nil)
+        
+        
+        let outImage = UIImage(cgImage: outContext!.makeImage()!)
+        self.outImageView.image = outImage
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        return true
+    }
+}
 
 
 
