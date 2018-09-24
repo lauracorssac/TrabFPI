@@ -98,5 +98,40 @@ class BrightnessViewController: UIViewController {
         
     }
     
-
+    
+    @IBAction func contrastButtonPressed(_ sender: UIButton) {
+        
+        let multiplier = 0.5
+        let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
+        
+        for (i, _) in pixelsCopy.enumerated() {
+            
+            let pixel = pixels[i]
+            
+            let byte0 = UInt8(pixel & 0x000000FF)
+            let byte1 = UInt8((pixel & 0x0000FF00) >> 8)
+            let byte2 = UInt8((pixel & 0x00FF0000) >> 16)
+            let byte3 = UInt8((pixel & 0xFF000000) >> 24) //alpha
+            let red = Double(byte0) * multiplier
+            let green = Double(byte1) * multiplier
+            let blue = Double(byte2) * multiplier
+            
+            let colors = [red, green, blue].map { color -> UInt8 in
+                if color > 255 {
+                    return UInt8(255)
+                }
+                return UInt8(color)
+            }
+            
+            let int32 = UInt32(byte3) << 24 | UInt32(colors[2]) << 16 | UInt32(colors[1]) << 8 | UInt32(colors[0])
+            pixelsCopy[i] = int32
+        }
+        let outContext = CGContext(data: pixelsCopy.baseAddress, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace,bitmapInfo: bitmapInfo, releaseCallback: nil, releaseInfo: nil)
+        
+        let outImage = UIImage(cgImage: outContext!.makeImage()!)
+        self.bottomImageView.image = outImage
+        
+    }
+    
 }

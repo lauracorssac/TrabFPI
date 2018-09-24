@@ -198,6 +198,14 @@
                                     <action selector="brightButtonPressed:" destination="HzR-7W-A30" eventType="touchUpInside" id="RtM-v7-hID"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRR-De-wSZ">
+                                <rect key="frame" x="118" y="305" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="contrastButtonPressed:" destination="HzR-7W-A30" eventType="touchUpInside" id="Yf1-UA-gRO"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U8m-cs-a2B">
                                 <rect key="frame" x="27" y="427" width="320" height="240"/>
                                 <constraints>
