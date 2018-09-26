@@ -16,13 +16,13 @@ class SecondViewController: UIViewController {
     var height: Int!
     var width: Int!
     var pixels: UnsafeMutableBufferPointer<UInt32>!
-    var grayPixels: UnsafeMutableBufferPointer<UInt8>!
+    //var grayPixels: UnsafeMutableBufferPointer<UInt8>!
     let bitsPerComponent = Int(8)
     var bytesPerRow: Int!
     let colorSpace = CGColorSpaceCreateDeviceRGB()
-    let colorSpaceGray = CGColorSpaceCreateDeviceGray()
+    //let colorSpaceGray = CGColorSpaceCreateDeviceGray()
     var bitmapInfo: UInt32!
-    var grayBitMapInfor: UInt32!
+    //var grayBitMapInfor: UInt32!
     var rawData: UnsafeMutablePointer<UInt32>!
     
     override func viewDidLoad() {
@@ -31,16 +31,18 @@ class SecondViewController: UIViewController {
     }
     func makeHistogram() {
         var shadesCount = [Int](repeating: 0, count: 256)
-        for pixel in grayPixels {
-            let shade = Int(pixel)
+        for pixel in pixels {
+            let byte0 = UInt8(pixel & 0x000000FF)
+            let shade = Int(byte0)
             shadesCount[shade] += 1
         }
-        let alpha = Double( 256.0 / Double(width * height))
+        let maxValue = shadesCount.max()!
+        let alpha = Double( 256.0 / Double(maxValue))
         shadesCount = shadesCount.map {
             Int(Double($0) * alpha)
         }
-        let rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: 256 * 256)
-        let pixelsCopy = UnsafeMutableBufferPointer<UInt8>(start: rawData, count: 256 * 256)
+        let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: 256 * 256)
+        let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: 256 * 256)
         
         for (i, _) in pixelsCopy.enumerated() {
             let line = i / 256
@@ -49,18 +51,18 @@ class SecondViewController: UIViewController {
             
             if oppositeLine < shadesCount[colunm] {
                 //let color =  UInt32(255) << 24 | UInt32(0)
-                pixelsCopy[i] = UInt8(0)
+                pixelsCopy[i] = UInt32(255) << 24 | UInt32(0)
             } else {
-                pixelsCopy[i] = UInt8(255)
+                pixelsCopy[i] = 0b1111_1111_1111_1111_1111_1111_1111_1111
             }
             
         }
         let outContext = CGContext(data: pixelsCopy.baseAddress,
                                    width: 256, height: 256,
                                    bitsPerComponent: bitsPerComponent,
-                                   bytesPerRow: 256,
-                                   space: colorSpaceGray,
-                                   bitmapInfo: grayBitMapInfor,
+                                   bytesPerRow: 256 * 4,
+                                   space: colorSpace,
+                                   bitmapInfo: bitmapInfo,
                                    releaseCallback: nil,
                                    releaseInfo: nil)
         
@@ -70,7 +72,7 @@ class SecondViewController: UIViewController {
     }
     
     @IBAction func histogramButtonPressed(_ sender: UIButton) {
-        
+        makeHistogram()
         
     }
     func loadInitialImage() {
@@ -83,7 +85,7 @@ class SecondViewController: UIViewController {
         rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
         
         bitmapInfo = CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue
-        grayBitMapInfor = CGImageAlphaInfo.none.rawValue
+        //grayBitMapInfor = CGImageAlphaInfo.none.rawValue
         
         
         let CGPointZero = CGPoint(x: 0, y: 0)
@@ -113,8 +115,8 @@ class SecondViewController: UIViewController {
     }
     @IBAction func grayScaleButtonPressed(_ sender: UIButton) {
         
-        let rawData = UnsafeMutablePointer<UInt8>.allocate(capacity: width * height)
-        let pixelsCopy = UnsafeMutableBufferPointer<UInt8>(start: rawData, count: width * height)
+        let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
         for (i, _) in pixelsCopy.enumerated() {
             
             let pixel = pixels[i]
@@ -129,24 +131,22 @@ class SecondViewController: UIViewController {
             
             let L = 0.299*red + 0.587*green + 0.114*blue
             let int8 = UInt8(L)
-            //let int8 = UInt8.init(L)
-            //let int32 = UInt32(byte3) << 24 | UInt32(int8) << 16 | UInt32(int8) << 8 | UInt32(int8)
+            let int32 = UInt32(byte3) << 24 | UInt32(int8) << 16 | UInt32(int8) << 8 | UInt32(int8)
             
-            pixelsCopy[i] = int8
+            pixelsCopy[i] = int32
         }
         let outContext = CGContext(data: pixelsCopy.baseAddress,
                                    width: width, height: height,
                                    bitsPerComponent: bitsPerComponent,
-                                   bytesPerRow: width,
-                                   space: colorSpaceGray,
-                                   bitmapInfo: grayBitMapInfor,
+                                   bytesPerRow: bytesPerRow,
+                                   space: colorSpace,
+                                   bitmapInfo: bitmapInfo,
                                    releaseCallback: nil,
                                    releaseInfo: nil)
         
-        grayPixels = pixelsCopy
+        pixels = pixelsCopy
         let outImage = UIImage(cgImage: outContext!.makeImage()!)
         self.bottomImageView.image = outImage
-        makeHistogram()
         
     }
     
