@@ -138,7 +138,7 @@
                                     <action selector="histogramButtonPressed:" destination="nUp-5T-wZ7" eventType="touchUpInside" id="zWb-LL-nPK"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NWB-DI-lha">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NWB-DI-lha">
                                 <rect key="frame" x="0.0" y="427" width="375" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="240" id="3Rp-PT-PdC"/>
@@ -150,6 +150,14 @@
                                 <state key="normal" title="Gray"/>
                                 <connections>
                                     <action selector="grayScaleButtonPressed:" destination="nUp-5T-wZ7" eventType="touchUpInside" id="CTK-x2-brQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UKY-ex-edz">
+                                <rect key="frame" x="337" y="221" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="eq"/>
+                                <connections>
+                                    <action selector="equalizationButtonPressed:" destination="nUp-5T-wZ7" eventType="touchUpInside" id="MMI-Nv-YQk"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -194,9 +202,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRR-De-wSZ">
-                                <rect key="frame" x="118" y="305" width="46" height="30"/>
+                                <rect key="frame" x="113" y="305" width="57" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="contrast"/>
                                 <connections>
                                     <action selector="contrastButtonPressed:" destination="HzR-7W-A30" eventType="touchUpInside" id="Yf1-UA-gRO"/>
                                 </connections>
@@ -208,6 +216,22 @@
                                     <constraint firstAttribute="width" constant="320" id="tZK-pY-2fu"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gbc-Pk-TGv">
+                                <rect key="frame" x="202" y="305" width="31" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="gray"/>
+                                <connections>
+                                    <action selector="grayScaleButtonPressed:" destination="HzR-7W-A30" eventType="touchUpInside" id="4o4-hw-gqX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZ0-p5-kCv">
+                                <rect key="frame" x="264" y="305" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="negativeButtonPressed:" destination="HzR-7W-A30" eventType="touchUpInside" id="G56-fv-U8h"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>

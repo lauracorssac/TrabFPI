@@ -29,13 +29,29 @@ class SecondViewController: UIViewController {
         super.viewDidLoad()
         loadInitialImage()
     }
-    func makeHistogram() {
+    
+    func getOriginalHistogram() -> [Int] {
         var shadesCount = [Int](repeating: 0, count: 256)
         for pixel in pixels {
             let byte0 = UInt8(pixel & 0x000000FF)
-            let shade = Int(byte0)
+            let byte1 = UInt8((pixel & 0x0000FF00) >> 8)
+            let byte2 = UInt8((pixel & 0x00FF0000) >> 16)
+            //let byte3 = UInt8((pixel & 0xFF000000) >> 24) //alpha
+            
+            let red = Double(byte0)
+            let green = Double(byte1)
+            let blue = Double(byte2)
+            
+            let L = 0.299*red + 0.587*green + 0.114*blue
+            let shade = Int(L)
             shadesCount[shade] += 1
         }
+        return shadesCount
+    }
+    
+    func makeHistogram() {
+       
+        var shadesCount =  getOriginalHistogram()
         let maxValue = shadesCount.max()!
         let alpha = Double( 256.0 / Double(maxValue))
         shadesCount = shadesCount.map {
@@ -115,6 +131,64 @@ class SecondViewController: UIViewController {
     }
     @IBAction func grayScaleButtonPressed(_ sender: UIButton) {
         
+        self.bottomImageView.image = convertToGrayScale()
+        
+    }
+    
+    func equalizeHistogram() {
+        let histogram = getOriginalHistogram()
+        
+        var cumHistogram = [Double](repeating: 0.0, count: histogram.count)
+        
+        let alpha = 255.0 / Double(width * height)
+        cumHistogram[0] = alpha * Double(histogram[0])
+        
+        for i in 1..<histogram.count {
+            cumHistogram[i] =  cumHistogram[i - 1] + Double(histogram[i]) * alpha
+        }
+        
+        let equalizedHistogram = cumHistogram.map { Int($0) }
+        
+        let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
+        for (i, _) in pixelsCopy.enumerated() {
+            
+            let pixel = pixels[i]
+            
+            let byte0 = UInt8(pixel & 0x000000FF)
+            let byte1 = UInt8((pixel & 0x0000FF00) >> 8)
+            let byte2 = UInt8((pixel & 0x00FF0000) >> 16)
+            let byte3 = UInt8((pixel & 0xFF000000) >> 24) //alpha
+            
+            let newRed = UInt8(equalizedHistogram[Int(byte0)])
+            let newGreen = UInt8(equalizedHistogram[Int(byte1)])
+            let newBlue = UInt8(equalizedHistogram[Int(byte2)])
+            
+           
+            let int32 = UInt32(byte3) << 24 | UInt32(newBlue) << 16 | UInt32(newGreen) << 8 | UInt32(newRed)
+            
+            pixelsCopy[i] = int32
+        }
+        let outContext = CGContext(data: pixelsCopy.baseAddress,
+                                   width: width, height: height,
+                                   bitsPerComponent: bitsPerComponent,
+                                   bytesPerRow: bytesPerRow,
+                                   space: colorSpace,
+                                   bitmapInfo: bitmapInfo,
+                                   releaseCallback: nil,
+                                   releaseInfo: nil)
+        
+        pixels = pixelsCopy
+        let outImage = UIImage(cgImage: outContext!.makeImage()!)
+        self.histogramImageView.image = outImage
+    }
+    
+    @IBAction func equalizationButtonPressed(_ sender: UIButton) {
+        
+        equalizeHistogram()
+    }
+    
+    func convertToGrayScale() -> UIImage {
         let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
         let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
         for (i, _) in pixelsCopy.enumerated() {
@@ -145,12 +219,15 @@ class SecondViewController: UIViewController {
                                    releaseInfo: nil)
         
         pixels = pixelsCopy
-        let outImage = UIImage(cgImage: outContext!.makeImage()!)
-        self.bottomImageView.image = outImage
-        
+        return UIImage(cgImage: outContext!.makeImage()!)
     }
     
-    
-    
+    func histogramMatching(sourceImage: UIImage, targetImage: UIImage) -> UIImage {
+        
+        
+        
+        
+        return UIImage()
+    }
     
 }
