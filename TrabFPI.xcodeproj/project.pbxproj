@@ -15,6 +15,8 @@
 		8D4567AD2142EC1B00204D3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4567AC2142EC1B00204D3E /* Assets.xcassets */; };
 		8D4567B02142EC1B00204D3E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D4567AE2142EC1B00204D3E /* LaunchScreen.storyboard */; };
 		8D62A535215D11D700FECAB8 /* ZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D62A534215D11D700FECAB8 /* ZoomViewController.swift */; };
+		8D89D043216172D40097D814 /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D89D042216172D40097D814 /* PhotoManager.swift */; };
+		8D89D0452161741F0097D814 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D89D0442161741F0097D814 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		8D4567AF2142EC1B00204D3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D4567B12142EC1B00204D3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D62A534215D11D700FECAB8 /* ZoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomViewController.swift; sourceTree = "<group>"; };
+		8D89D042216172D40097D814 /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
+		8D89D0442161741F0097D814 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 				8D0CE800215835760041826A /* SecondViewController.swift */,
 				8D0CE80221586A910041826A /* BrightnessViewController.swift */,
 				8D62A534215D11D700FECAB8 /* ZoomViewController.swift */,
+				8D89D042216172D40097D814 /* PhotoManager.swift */,
+				8D89D0442161741F0097D814 /* Extensions.swift */,
 			);
 			path = TrabFPI;
 			sourceTree = "<group>";
@@ -144,11 +150,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D89D043216172D40097D814 /* PhotoManager.swift in Sources */,
 				8D0CE801215835760041826A /* SecondViewController.swift in Sources */,
 				8D62A535215D11D700FECAB8 /* ZoomViewController.swift in Sources */,
 				8D0CE80321586A910041826A /* BrightnessViewController.swift in Sources */,
 				8D4567A82142EC1700204D3E /* ViewController.swift in Sources */,
 				8D4567A62142EC1700204D3E /* AppDelegate.swift in Sources */,
+				8D89D0452161741F0097D814 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
