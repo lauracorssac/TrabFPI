@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum RotateDirection {
+    case left, right
+}
+
 class ZoomViewController: UIViewController {
 
     @IBOutlet weak var smallImageView: UIImageView!
@@ -17,6 +21,65 @@ class ZoomViewController: UIViewController {
         super.viewDidLoad()
         self.smallImageView.image = UIImage(named: "small")
     }
+    
+    func rotate(image: UIImage, rotateDirection: RotateDirection) -> UIImage? {
+        guard let cgImage = image.cgImage else {
+            return nil
+        }
+        let width = Int(cgImage.width)
+        let height = Int(cgImage.height)
+        
+        let newWidth = height
+        let newHeight = width
+        
+        let rotatedRawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height )
+        let originalRawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        
+        let imageContext = CGContext(data: originalRawData,
+                                     width: width, height: height,
+                                     bitsPerComponent: cgImage.bitsPerComponent,
+                                     bytesPerRow: Int(4 * cgImage.width),
+                                     space: cgImage.colorSpace!,
+                                     bitmapInfo: cgImage.bitmapInfo.rawValue)
+        
+        let rect = CGRect(origin: .zero, size: CGSize(width: width, height: height))
+        imageContext?.draw(cgImage, in: rect)
+        
+        let originalPixels = UnsafeMutableBufferPointer<UInt32>(start: originalRawData, count: width * height)
+        let rotatedPixels = UnsafeMutableBufferPointer<UInt32>(start: rotatedRawData, count: width * height)
+        
+        for (i, pixel) in originalPixels.enumerated() {
+            let pixel_colunm = i % width
+            let pixel_line = Int(i / width)
+            
+            var dest_line: Int
+            var dest_colunm: Int
+            
+            switch rotateDirection {
+            case .left:
+                dest_colunm = pixel_line
+                dest_line = (newHeight - 1) - pixel_colunm
+            case .right:
+                dest_line = pixel_colunm
+                dest_colunm = (newWidth - 1) - pixel_line
+            }
+            
+            rotatedPixels[newWidth * dest_line + dest_colunm] = pixel
+        }
+        let outputContext = CGContext(data: rotatedPixels.baseAddress,
+                                      width: newWidth, height: newHeight,
+                                      bitsPerComponent: cgImage.bitsPerComponent,
+                                      bytesPerRow: Int(4 * newWidth),
+                                      space: cgImage.colorSpace!,
+                                      bitmapInfo: cgImage.bitmapInfo.rawValue)
+        
+        let outImage = UIImage(cgImage: outputContext!.makeImage()!)
+        self.smallImageView.frame = CGRect(x: 0, y: 0, width: newWidth, height: newHeight)
+        self.smallImageView.image = outImage
+        return outImage
+    }
+    
+    
 
     func zoomIn(image: UIImage) -> UIImage? {
         
@@ -123,8 +186,14 @@ class ZoomViewController: UIViewController {
         
     }
     @IBAction func zoom(_ sender: UIButton) {
-        zoomIn(image: self.smallImageView.image!)
-        
+        _ = zoomIn(image: self.smallImageView.image!)
     }
-    
+   
+    @IBAction func rotateLeftPressed(_ sender: UIButton) {
+        _ = rotate(image: self.smallImageView.image!, rotateDirection: .left)
+    }
+   
+    @IBAction func rotateRightPressed(_ sender: UIButton) {
+        _ = rotate(image: self.smallImageView.image!, rotateDirection: .right)
+    }
 }

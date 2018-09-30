@@ -207,11 +207,27 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9t-bD-t1b">
-                                <rect key="frame" x="255" y="76" width="46" height="30"/>
+                                <rect key="frame" x="20" y="281" width="38" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="zoom"/>
                                 <connections>
                                     <action selector="zoom:" destination="rwr-0N-B2w" eventType="touchUpInside" id="oLq-ys-chH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nqz-Fy-LLL">
+                                <rect key="frame" x="2" y="319" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="rotate right"/>
+                                <connections>
+                                    <action selector="rotateRightPressed:" destination="rwr-0N-B2w" eventType="touchUpInside" id="QDP-lh-LoP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpH-jd-rfp">
+                                <rect key="frame" x="6" y="366" width="67" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="rotate left"/>
+                                <connections>
+                                    <action selector="rotateLeftPressed:" destination="rwr-0N-B2w" eventType="touchUpInside" id="1kr-dV-ACu"/>
                                 </connections>
                             </button>
                         </subviews>
