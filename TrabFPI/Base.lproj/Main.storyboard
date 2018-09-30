@@ -199,65 +199,104 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcx-mx-JTg">
-                                <rect key="frame" x="0.0" y="0.0" width="148" height="212"/>
+                                <rect key="frame" x="113" y="181" width="148" height="212"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nqz-Fy-LLL">
-                                <rect key="frame" x="109" y="366" width="77" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="rotate right"/>
-                                <connections>
-                                    <action selector="rotateRightPressed:" destination="rwr-0N-B2w" eventType="touchUpInside" id="QDP-lh-LoP"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpH-jd-rfp">
-                                <rect key="frame" x="6" y="366" width="67" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="rotate left"/>
-                                <connections>
-                                    <action selector="rotateLeftPressed:" destination="rwr-0N-B2w" eventType="touchUpInside" id="1kr-dV-ACu"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-cN-uOZ">
-                                <rect key="frame" x="5" y="410" width="61" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="convolve"/>
-                                <connections>
-                                    <action selector="convolvePressed:" destination="rwr-0N-B2w" eventType="touchUpInside" id="bLe-B2-97e"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9t-bD-t1b">
-                                <rect key="frame" x="245" y="366" width="38" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="zoom"/>
-                                <connections>
-                                    <action selector="zoom:" destination="rwr-0N-B2w" eventType="touchUpInside" id="oLq-ys-chH"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4zN-RK-JnW">
-                                <rect key="frame" x="109" y="410" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="zoomOutPressed:" destination="rwr-0N-B2w" eventType="touchUpInside" id="VSr-kd-yKL"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N8m-2b-RBf">
-                                <rect key="frame" x="209" y="468" width="166" height="165"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DwY-tR-uYD">
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="I7S-7w-RI6"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bef-C7-wVg">
+                                <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="SIc-UG-0o4"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="DwY-tR-uYD" firstAttribute="trailing" secondItem="f7B-wH-a4G" secondAttribute="trailing" id="5rD-su-vIj"/>
+                            <constraint firstItem="bef-C7-wVg" firstAttribute="leading" secondItem="f7B-wH-a4G" secondAttribute="leading" id="6ZR-9J-1Mn"/>
+                            <constraint firstItem="DwY-tR-uYD" firstAttribute="leading" secondItem="f7B-wH-a4G" secondAttribute="leading" id="PTG-rf-cly"/>
+                            <constraint firstItem="bef-C7-wVg" firstAttribute="trailing" secondItem="f7B-wH-a4G" secondAttribute="trailing" id="Sug-HY-Xpf"/>
+                            <constraint firstItem="bef-C7-wVg" firstAttribute="leading" secondItem="f7B-wH-a4G" secondAttribute="leading" id="UzB-X9-sQG"/>
+                            <constraint firstItem="bef-C7-wVg" firstAttribute="trailing" secondItem="f7B-wH-a4G" secondAttribute="trailing" id="YX0-xV-Lj1"/>
+                            <constraint firstItem="f7B-wH-a4G" firstAttribute="bottom" secondItem="bef-C7-wVg" secondAttribute="bottom" id="dBr-To-qS9"/>
+                            <constraint firstItem="bef-C7-wVg" firstAttribute="top" secondItem="DwY-tR-uYD" secondAttribute="bottom" id="pNi-3a-KTA"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="f7B-wH-a4G"/>
                     </view>
                     <connections>
+                        <outlet property="constraint" destination="SIc-UG-0o4" id="JSi-1i-JOG"/>
+                        <outlet property="containerView" destination="bef-C7-wVg" id="OKO-5A-5xS"/>
+                        <outlet property="headerView" destination="DwY-tR-uYD" id="G6k-5a-Q6i"/>
                         <outlet property="smallImageView" destination="pcx-mx-JTg" id="YmD-P8-LYO"/>
-                        <outlet property="zoomedImageView" destination="N8m-2b-RBf" id="XxA-wX-qhL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Khf-pL-FlT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1880.8" y="778.56071964017997"/>
+        </scene>
+        <!--Control View Controller-->
+        <scene sceneID="9wa-5y-8Zm">
+            <objects>
+                <viewController storyboardIdentifier="menuVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="K2K-sn-Sr2" customClass="ControlViewController" customModule="TrabFPI" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sbd-27-vTw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="COu-dm-Kdm">
+                                <rect key="frame" x="131" y="175" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="rotate right"/>
+                                <connections>
+                                    <action selector="rotateRightPressed:" destination="K2K-sn-Sr2" eventType="touchUpInside" id="GND-8e-SbE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7e-ov-CKt">
+                                <rect key="frame" x="27" y="219" width="61" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="convolve"/>
+                                <connections>
+                                    <action selector="convolvePressed:" destination="K2K-sn-Sr2" eventType="touchUpInside" id="VDQ-YV-A7M"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jsv-Bi-rcN">
+                                <rect key="frame" x="261" y="175" width="51" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="zoomIn"/>
+                                <connections>
+                                    <action selector="zoomInPressed:" destination="K2K-sn-Sr2" eventType="touchUpInside" id="Hel-Bh-RvO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k8L-LS-zkX">
+                                <rect key="frame" x="122" y="219" width="65" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="ZoomOut"/>
+                                <connections>
+                                    <action selector="zoomOutPressed:" destination="K2K-sn-Sr2" eventType="touchUpInside" id="tYM-TJ-SQv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQj-2x-Lh6">
+                                <rect key="frame" x="24" y="175" width="67" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="rotate left"/>
+                                <connections>
+                                    <action selector="rotateLeftPressed:" destination="K2K-sn-Sr2" eventType="touchUpInside" id="d0B-O9-lK3"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="1NP-lf-9wQ"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w7O-kF-vm2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2552" y="779"/>
         </scene>
         <!--Brightness View Controller-->
         <scene sceneID="gqx-mk-hKt">
