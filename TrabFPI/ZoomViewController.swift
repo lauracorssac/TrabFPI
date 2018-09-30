@@ -19,7 +19,7 @@ class ZoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.smallImageView.image = UIImage(named: "dog")
+        self.smallImageView.image = UIImage(named: "small")
     }
     
     func rotate(image: UIImage, rotateDirection: RotateDirection) -> UIImage? {
@@ -211,7 +211,12 @@ class ZoomViewController: UIViewController {
     }
     
     @IBAction func zoom(_ sender: UIButton) {
-//        _ = zoomIn(image: self.smallImageView.image!)
+        let cgimage = PhotoManager.shared.zoomIn(image: smallImageView.image!.cgImage!)
+        if let image = cgimage {
+            let uiimage = UIImage(cgImage: image)
+            self.zoomedImageView.frame = CGRect(x: 0, y: 0, width: uiimage.size.width, height: uiimage.size.height)
+            self.zoomedImageView.image = uiimage
+        }
     }
    
     @IBAction func rotateLeftPressed(_ sender: UIButton) {

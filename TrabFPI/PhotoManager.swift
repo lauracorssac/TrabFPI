@@ -113,49 +113,20 @@ class PhotoManager {
             if line % 2 == 0 {
                 
                 let int32 = [zoomedPixels[index - 1], zoomedPixels[index + 1]].average()
-                
-//                let byte0 = UInt8( (Int(UInt8(zoomedPixels[index - 1] & 0x000000FF)) + Int(UInt8(zoomedPixels[index + 1] & 0x000000FF))) / 2)
-//                let byte1 = UInt8( (Int( UInt8( (zoomedPixels[index - 1] & 0x0000FF00) >> 8) ) + Int( UInt8( (zoomedPixels[index + 1] & 0x0000FF00) >> 8) )) / 2 )
-//                let byte2 = UInt8((Int(UInt8((zoomedPixels[index - 1] & 0x00FF0000) >> 16)) + Int(UInt8((zoomedPixels[index + 1] & 0x00FF0000) >> 16))) / 2)
-//                let byte3 = UInt8((zoomedPixels[index - 1] & 0xFF000000) >> 24) //alpha
-                
-                //let int32 = UInt32(byte3) << 24 | UInt32(byte2) << 16 | UInt32(byte1) << 8 | UInt32(byte0)
                 zoomedPixels[index] = int32
                 
             } else {
                 
-                let byte0 = UInt8( (Int(UInt8(zoomedPixels[index - newWidth] & 0x000000FF)) + Int(UInt8(zoomedPixels[index + newWidth] & 0x000000FF))) / 2)
-                let byte1 = UInt8( (Int( UInt8( (zoomedPixels[index - newWidth] & 0x0000FF00) >> 8) ) + Int( UInt8( (zoomedPixels[index + newWidth] & 0x0000FF00) >> 8) )) / 2 )
-                let byte2 = UInt8((Int(UInt8((zoomedPixels[index - newWidth] & 0x00FF0000) >> 16)) + Int(UInt8((zoomedPixels[index + newWidth] & 0x00FF0000) >> 16))) / 2)
-                let byte3 = UInt8((zoomedPixels[index - newWidth] & 0xFF000000) >> 24) //alpha
                 
-                let int32 = UInt32(byte3) << 24 | UInt32(byte2) << 16 | UInt32(byte1) << 8 | UInt32(byte0)
+                let int32 = [zoomedPixels[index + newWidth], zoomedPixels[index - newWidth]].average()
                 zoomedPixels[index] = int32
                 
                 if colunm != newWidth - 1 {
                     
-                    
-                    let byte0 = UInt8(
-                        (Int(UInt8(zoomedPixels[(index + 1) + newWidth + 1] & 0x000000FF)) +
-                            Int(UInt8(zoomedPixels[(index + 1) + newWidth - 1] & 0x000000FF)) +
-                            Int(UInt8(zoomedPixels[(index + 1) - newWidth + 1] & 0x000000FF)) +
-                            Int(UInt8(zoomedPixels[(index + 1) - newWidth - 1] & 0x000000FF))) / 4)
-                    
-                    let byte1 = UInt8(
-                        (Int(UInt8((zoomedPixels[(index + 1) + newWidth + 1] & 0x0000FF00) >> 8)) +
-                            Int(UInt8((zoomedPixels[(index + 1) + newWidth - 1] & 0x0000FF00) >> 8)) +
-                            Int(UInt8((zoomedPixels[(index + 1) - newWidth + 1] & 0x0000FF00) >> 8)) +
-                            Int(UInt8((zoomedPixels[(index + 1) - newWidth - 1] & 0x0000FF00) >> 8))) / 4)
-                    
-                    let byte2 = UInt8(
-                        (Int(UInt8((zoomedPixels[(index + 1) + newWidth + 1] & 0x00FF0000) >> 16)) +
-                            Int(UInt8((zoomedPixels[(index + 1) + newWidth - 1] & 0x00FF0000) >> 16)) +
-                            Int(UInt8((zoomedPixels[(index + 1) - newWidth + 1] & 0x00FF0000) >> 16)) +
-                            Int(UInt8((zoomedPixels[(index + 1) - newWidth - 1] & 0x00FF0000) >> 16))) / 4)
-                    
-                    
-                    let byte3 = UInt8((zoomedPixels[index - newWidth] & 0xFF000000) >> 24) //alpha
-                    let int32 = UInt32(byte3) << 24 | UInt32(byte2) << 16 | UInt32(byte1) << 8 | UInt32(byte0)
+                    let int32 = [zoomedPixels[(index + 1) + newWidth + 1],
+                                 zoomedPixels[(index + 1) + newWidth - 1],
+                                 zoomedPixels[(index + 1) - newWidth + 1],
+                                 zoomedPixels[(index + 1) - newWidth - 1]].average()
                     
                     zoomedPixels[index + 1] = UInt32(int32)
                 }
