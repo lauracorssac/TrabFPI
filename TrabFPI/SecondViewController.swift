@@ -30,7 +30,20 @@ class SecondViewController: UIViewController {
         loadInitialImage()
     }
     
-    func getOriginalHistogram() -> [Int] {
+    func getOriginalHistogram(from image: UIImage) -> [Int] {
+        
+        let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        let imageContext = CGContext(data: rawData,
+                                     width: width, height: height,
+                                     bitsPerComponent: bitsPerComponent,
+                                     bytesPerRow: bytesPerRow,
+                                     space: colorSpace,
+                                     bitmapInfo: bitmapInfo)
+        
+        let rect = CGRect(origin: .zero, size: image.size)
+        imageContext?.draw(image.cgImage!, in: rect)
+        pixels = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
+        
         var shadesCount = [Int](repeating: 0, count: 256)
         for pixel in pixels {
             let byte0 = UInt8(pixel & 0x000000FF)
@@ -51,7 +64,7 @@ class SecondViewController: UIViewController {
     
     func makeHistogram() {
        
-        var shadesCount =  getOriginalHistogram()
+        var shadesCount =  getOriginalHistogram(from: bottomImageView.image!)
         let maxValue = shadesCount.max()!
         let alpha = Double( 256.0 / Double(maxValue))
         shadesCount = shadesCount.map {
@@ -131,12 +144,11 @@ class SecondViewController: UIViewController {
     }
     @IBAction func grayScaleButtonPressed(_ sender: UIButton) {
         
-        self.bottomImageView.image = convertToGrayScale()
+        self.bottomImageView.image = convertToGrayScale(image: bottomImageView.image!)
         
     }
     
-    func equalizeHistogram() {
-        let histogram = getOriginalHistogram()
+    func getEqualizedHistogram(from histogram: [Int]) -> [Int] {
         
         var cumHistogram = [Double](repeating: 0.0, count: histogram.count)
         
@@ -148,6 +160,12 @@ class SecondViewController: UIViewController {
         }
         
         let equalizedHistogram = cumHistogram.map { Int($0) }
+        return equalizedHistogram
+    }
+    
+    func equalizeHistogram(from image: UIImage) -> UIImage {
+        
+        let equalizedHistogram = getEqualizedHistogram(from: getOriginalHistogram(from: image))
         
         let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
         let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
@@ -180,15 +198,15 @@ class SecondViewController: UIViewController {
         
         pixels = pixelsCopy
         let outImage = UIImage(cgImage: outContext!.makeImage()!)
-        self.histogramImageView.image = outImage
+        return outImage
     }
     
     @IBAction func equalizationButtonPressed(_ sender: UIButton) {
         
-        equalizeHistogram()
+        self.histogramImageView.image = equalizeHistogram(from: bottomImageView.image!)
     }
     
-    func convertToGrayScale() -> UIImage {
+    func convertToGrayScale(image: UIImage) -> UIImage {
         let rawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
         let pixelsCopy = UnsafeMutableBufferPointer<UInt32>(start: rawData, count: width * height)
         for (i, _) in pixelsCopy.enumerated() {
@@ -222,12 +240,67 @@ class SecondViewController: UIViewController {
         return UIImage(cgImage: outContext!.makeImage()!)
     }
     
-    func histogramMatching(sourceImage: UIImage, targetImage: UIImage) -> UIImage {
+    func histogramMatching(sourceHistogram: [Int], targetHistogram: [Int]) -> [Int] {
         
+        var matchingHistogram = [Int](repeating: 0, count: sourceHistogram.count)
         
+        for i in 0..<sourceHistogram.count {
+            let shade  = sourceHistogram[i]
+            var nearestValue = -shade
+            for targetShade in targetHistogram {
+                if abs(targetShade - shade) < abs(nearestValue - shade) {
+                    nearestValue = targetShade
+                }
+            }
+            matchingHistogram[i] = nearestValue
+        }
         
+        return matchingHistogram
+    }
+    @IBAction func matchingButtonPressed(_ sender: UIButton) {
+        let sourceImage = convertToGrayScale(image: UIImage(named: "Gramado_22k")!)
+        let targetImage = convertToGrayScale(image: UIImage(named: "Gramado_22k")!)
+        let sourceHistogram = getEqualizedHistogram(from: getOriginalHistogram(from: sourceImage))
+        let targetHistogram = getEqualizedHistogram(from: getOriginalHistogram(from: targetImage))
+        let matchingHistogram = histogramMatching(sourceHistogram: sourceHistogram, targetHistogram: targetHistogram)
         
-        return UIImage()
+        let width = Int(sourceImage.size.width)
+        let height = Int(sourceImage.size.height)
+        
+        let matchingRawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        let originalRawData = UnsafeMutablePointer<UInt32>.allocate(capacity: width * height)
+        
+        let imageContext = CGContext(data: originalRawData,
+                                     width: width, height: height,
+                                     bitsPerComponent: bitsPerComponent,
+                                     bytesPerRow: Int(4 * sourceImage.size.width),
+                                     space: colorSpace,
+                                     bitmapInfo: bitmapInfo)
+        
+        let rect = CGRect(origin: .zero, size: sourceImage.size)
+        imageContext?.draw(sourceImage.cgImage!, in: rect)
+        
+        let originalPixels = UnsafeMutableBufferPointer<UInt32>(start: originalRawData, count: width * height)
+        let matchingPixels = UnsafeMutableBufferPointer<UInt32>(start: matchingRawData, count: width * height)
+        
+        for (i,_) in matchingPixels.enumerated() {
+            let pixel = originalPixels[i]
+            let byte0 = UInt8(pixel & 0x000000FF)
+            let shade = Int(byte0)
+            let int8 = matchingHistogram[shade]
+            let int32 = UInt32(255) << 24 | UInt32(int8) << 16 | UInt32(int8) << 8 | UInt32(int8)
+            matchingPixels[i] = int32
+        }
+        
+        let outputContext = CGContext(data: matchingPixels.baseAddress,
+                                     width: width, height: height,
+                                     bitsPerComponent: bitsPerComponent,
+                                     bytesPerRow: Int(4 * sourceImage.size.width),
+                                     space: colorSpace,
+                                     bitmapInfo: bitmapInfo)
+        
+        self.bottomImageView.image = UIImage(cgImage: outputContext!.makeImage()!)
+        
     }
     
 }
