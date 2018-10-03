@@ -15,17 +15,18 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         if let cellImage = image {
             self.imageView.frame.size = cellImage.size
             self.imageView.center = contentView.center
         }
     }
-    
     func configure(with image: UIImage) {
         self.image = image
         self.imageView.frame.size = image.size
         self.imageView.center = contentView.center
         self.imageView.image = image
+       
     }
     
 }

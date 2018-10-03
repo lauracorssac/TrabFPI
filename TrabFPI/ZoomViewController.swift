@@ -22,6 +22,15 @@ class ZoomViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var constraint: NSLayoutConstraint!
     
+    let imagePicker = UIImagePickerController()
+    
+    @IBAction func addImagePressed(_ sender: UIButton) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+        
+    }
+    
     var images: [UIImage] = []
     
     private let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut)
@@ -30,10 +39,14 @@ class ZoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        imagePicker.delegate = self
         headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapMenu(_:))))
         
         collectionView.dataSource = self
+        
+        if let layout = collectionView?.collectionViewLayout as? CategoriesLayout {
+            layout.delegate = self
+        }
         let image = UIImage(named: originalImageName)!
         images = [image]
         collectionView.reloadData()
@@ -75,7 +88,11 @@ extension ZoomViewController: ControlVCDelegate {
         let image = (self.images.first?.cgImage)!
         var cgImages: [CGImage?] = [image]
         
-        let target = (UIImage(named: "dog")?.cgImage!)!
+        var target = (UIImage(named: "dog")?.cgImage!)!
+        if self.images.count > 1 {
+            target = images[1].cgImage!
+        }
+        
         
         switch option {
         case .zoomIn:
@@ -141,4 +158,21 @@ extension ZoomViewController: UICollectionViewDataSource {
         return cell
     }
 }
+extension ZoomViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            self.images.append(pickedImage)
+            collectionView.reloadData()
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
+}
 
+extension ZoomViewController: LayoutDelegate {
+    func getCellSize(for indexPath: IndexPath) -> CGSize {
+        return images[indexPath.row].size
+    }
+    
+    
+}
